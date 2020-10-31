@@ -1,3 +1,4 @@
+import h2d.Bitmap;
 import h2d.Anim;
 
 class Main extends hxd.App {
@@ -5,7 +6,9 @@ class Main extends hxd.App {
 	var spinSpeed:Float = 1;
 
 	override function init() {
-		// allocate a Texture with red color and creates a 100x100 Tile from it
+		hxd.Res.initLocal();
+
+/* 		// allocate a Texture with red color and creates a 100x100 Tile from it
 		var tile = h2d.Tile.fromColor(0xFF0000, 100, 100);
 		// create a Bitmap object, which will display the tile
 		// and will be added to our 2D scene (s2d)
@@ -49,8 +52,37 @@ class Main extends hxd.App {
 
 		interaction.onOut = function(event:hxd.Event) {
 			toggleAnimPlay(anim);
+		} */
+
+		var coinTile = hxd.Res.Coin.toTile();
+		var coinGrid = coinTile.gridFlatten(32);
+		trace(coinGrid);
+		trace("Hello");
+
+		var coinArray:Array<Anim> = [];
+
+		for (i in 0...(Math.floor(s2d.width / 32))) {
+			for (j in 0...(Math.floor(s2d.height / 32))) {
+				var coinAnim = new Anim(coinGrid, 10, s2d);
+				coinAnim.currentFrame = Math.floor(10 % (i + j));  		
+				coinAnim.speed = 20;
+				coinAnim.x = 0 + 32 * i;
+				coinAnim.y = 0 + 32 * j;
+				coinAnim.alpha = 0.5;
+				coinArray.push(coinAnim);
+			}
+
 		}
 
+
+/* 		var coinStatic = new h2d.Bitmap(coinGrid[0], s2d);
+		
+		coinStatic.tile.dx = coinStatic.x / 2;
+		coinStatic.tile.dy = coinStatic.y / 2;
+		coinStatic.x = 20;
+		coinStatic.y = 20;
+		
+		coinStatic.rotate(Math.PI / 180 * 45); */
 		/* anim.loop = true;
 
 			var playCount = 0;
@@ -78,8 +110,8 @@ class Main extends hxd.App {
 	// on each frame
 	override function update(dt:Float) {
 		// increment the display bitmap rotation by 0.1 radians
-		bmp.rotation += spinSpeed * dt;
-		bmp.x += 10 * dt;
+		// bmp.rotation += spinSpeed * dt;
+		// bmp.x += 10 * dt;
 	}
 
 	static function main() {
